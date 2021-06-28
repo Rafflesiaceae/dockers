@@ -1,0 +1,112 @@
+jenkins:
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        # create a user called admin
+        - id: "admin"
+          password: "admin"
+  authorizationStrategy: loggedInUsersCanDoAnything
+
+unclassified:
+  location:
+    adminAddress: "address not configured yet <nobody@nowhere>"
+    url: "http://localhost:8080/"
+  mailer:
+    charset: "UTF-8"
+    useSsl: false
+  globalLibraries:
+    libraries:
+      - name: "awesome-lib"
+        retriever:
+          modernSCM:
+            scm:
+              git:
+                remote: "https://github.com/jenkins-infra/pipeline-library.git"
+
+jobs:
+  # - script: >
+  #     job('example-1') {
+  #         scm {
+  #             git {
+  #                 remote {
+  #                     name('remoteB')
+  #                     url('ssh://git@git:22/git-server/repos/jenkins-shared')
+  #                     // url('git@git/jenkins-shared')
+  #                 }
+  #                 extensions {
+  #                     // cleanAfterCheckout()
+  #                     // relativeTargetDirectory('repo1')
+  #                 }
+  #             }
+  #         }
+  #     }
+  # - script: >
+  #     pipelineJob('example') {
+  #         definition {
+  #             cps {
+  #                 script(readFileFromWorkspace('project-a-workflow.groovy'))
+  #                 sandbox()
+  #             }
+  #         }
+  #     }
+  - script: >
+      multibranchPipelineJob('jenkins-shared') {
+          branchSources {
+              git {
+                  id('123456789') // IMPORTANT: use a constant and unique identifier
+                  remote('ssh://git@git:22/git-server/repos/jenkins-shared')
+                  // remote('https://github.com/jenkinsci/job-dsl-plugin.git')
+                  // credentialsId('github-ci')
+                  includes('*')
+              }
+          }
+          orphanedItemStrategy {
+              discardOldItems {
+                  numToKeep(20)
+              }
+          }
+      }
+  - script: >
+      job('bar') {
+        steps {
+          shell('echo Hello World!')
+        }
+      }
+  # - script: >
+  #     job('foo') {
+  #       steps {
+  #         shell('echo Hello foo!')
+  #       }
+  #     }
+  # - script: >
+  #     pipelineJob('pipeline-demo') {
+  #       definition {
+  #         cpsScm {
+  #           scm {
+  #             git {
+  #               remote {
+  #                 url('https://github.com/argeas/jcasc-example.git')
+  #                 credentials('github-ssh-keys')
+  #               }
+  #               branches('master')
+  #               scriptPath('Jenkins/Jenkinsfile.groovy')
+  #             }
+  #           }
+  #         }
+  #       }
+  #     }
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - basicSSHUserPrivateKey:
+              scope: SYSTEM
+              id: ssh_with_passphrase_provided
+              username: ssh_root
+              passphrase: ""
+              description: "SSH passphrase with private key file. Private key provided"
+              privateKeySource:
+                directEntry:
+                  privateKey: /var/jenkins_home/gitkey

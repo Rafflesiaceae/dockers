@@ -1,0 +1,4 @@
+FROM jkarlos/git-server-docker
+
+COPY ./git-key.pub ~/git-server/keys
+# vim: ft=dockerfile:

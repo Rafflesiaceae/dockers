@@ -1,0 +1,33 @@
+version: "2"
+services:
+  jenkins:
+    build: .
+    user: root
+    networks:
+      - jenkinsnet
+    ports:
+      - 8080:8080
+      - 8443:8443
+      - 50000:50000
+    volumes:
+      - $PWD/jenkins-casc.yaml:/usr/share/jenkins/jenkins-casc.yaml
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins_data:/var/jenkins_home
+    container_name: jenksi
+    links:
+      - git:git
+  git:
+    # image: jkarlos/git-server-docker
+    build:
+      context: .
+      dockerfile: ./git-Dockerfile
+    networks:
+      - jenkinsnet
+    volumes:
+      - $PWD/git-repos:/git-server/repos
+      - $PWD/git-keys:/git-server/keys
+volumes:
+  jenkins_data:
+networks:
+  jenkinsnet:
+    # driver: bridge
