@@ -54,10 +54,9 @@ jobs:
       multibranchPipelineJob('jenkins-shared') {
           branchSources {
               git {
-                  id('123456789') // IMPORTANT: use a constant and unique identifier
+                  id('123456789')
                   remote('ssh://git@git:22/git-server/repos/jenkins-shared')
-                  // remote('https://github.com/jenkinsci/job-dsl-plugin.git')
-                  // credentialsId('github-ci')
+                  credentialsId('gitkey')
                   includes('*')
               }
           }
@@ -102,11 +101,11 @@ credentials:
     domainCredentials:
       - credentials:
           - basicSSHUserPrivateKey:
-              scope: SYSTEM
-              id: ssh_with_passphrase_provided
-              username: ssh_root
+              scope: GLOBAL
+              id: gitkey
+              username: git
               passphrase: ""
               description: "SSH passphrase with private key file. Private key provided"
               privateKeySource:
                 directEntry:
-                  privateKey: /var/jenkins_home/gitkey
+                  privateKey: "${readFile:/var/jenkins_home/gitkey}"
