@@ -17,12 +17,26 @@ unclassified:
     useSsl: false
   globalLibraries:
     libraries:
-      - name: "awesome-lib"
+      - name: jenkins-shared
         retriever:
           modernSCM:
             scm:
               git:
-                remote: "https://github.com/jenkins-infra/pipeline-library.git"
+                id: jenkins-shared
+                remote: "ssh://git@git:22/git-server/repos/jenkins-shared"
+                credentialsId: gitkey
+                # traits:
+                #   - cloneOptionTrait:
+                #     extension:
+                #       depth: 1
+                #       noTags: true
+                #       shallow: true
+      # - name: "awesome-lib"
+      #   retriever:
+      #     modernSCM:
+      #       scm:
+      #         git:
+      #           remote: "https://github.com/jenkins-infra/pipeline-library.git"
 
 jobs:
   # - script: >
@@ -51,11 +65,11 @@ jobs:
   #         }
   #     }
   - script: >
-      multibranchPipelineJob('jenkins-shared') {
+      multibranchPipelineJob('main') {
           branchSources {
               git {
-                  id('123456789')
-                  remote('ssh://git@git:22/git-server/repos/jenkins-shared')
+                  id('main-job-dude')
+                  remote('ssh://git@git:22/git-server/repos/main')
                   credentialsId('gitkey')
                   includes('*')
               }
@@ -66,12 +80,12 @@ jobs:
               }
           }
       }
-  - script: >
-      job('bar') {
-        steps {
-          shell('echo Hello World!')
-        }
-      }
+  # - script: >
+  #     job('bar') {
+  #       steps {
+  #         shell('echo Hello World!')
+  #       }
+  #     }
   # - script: >
   #     job('foo') {
   #       steps {
