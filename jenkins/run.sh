@@ -21,5 +21,6 @@ old() {
 
 # docker-compose down || true
 # docker volume rm jenksi_jenkins_data
+mkdir -p ./git-keys/
 cp ./git-key.pub ./git-keys/id_rsa.pub # copy public key for git
 docker-compose up --build
