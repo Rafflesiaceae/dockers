@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-                dir("build-env") {
+                dir("$BUILD_ENV") {
                     git branch: 'main', credentialsId: 'gitkey', url: 'ssh://git@git:22/git-server/repos/build-env'
                 }
                 sh('find . -name "*"')
