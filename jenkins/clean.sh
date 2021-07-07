@@ -2,6 +2,7 @@
 set -eo pipefail
 
 repos=(
+    "build-env"
     "jenkins-shared"
     "main"
 )

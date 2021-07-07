@@ -1,4 +1,5 @@
 {
 	"./jenkins-shared" : "./git-repos/jenkins-shared",
-	"./main"           : "./git-repos/main"
+	"./main"           : "./git-repos/main",
+	"./build-env"      : "./git-repos/build-env"
 }

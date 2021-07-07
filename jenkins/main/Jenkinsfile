@@ -2,7 +2,18 @@ library 'jenkins-shared@main'
 
 pipeline {
     agent any
+    environment {
+        BUILD_ENV = "${env.WORKSPACE}/build-env"
+    }
     stages {
+        stage('checkout') {
+            steps {
+                dir("build-env") {
+                    git branch: 'main', credentialsId: 'gitkey', url: 'ssh://git@git:22/git-server/repos/build-env'
+                }
+                sh('find . -name "*"')
+            }
+        }
         stage('build') {
             steps {
                 echo 'building'
