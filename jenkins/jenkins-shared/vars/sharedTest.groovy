@@ -12,7 +12,8 @@ def call() {
 
     // def fromjs = TestClass.fromJson('{ "foo": "moo", "mc": { "poo": "hrm" } }')
     def fromjs = Json.from(TestClass, '{ "foo": "moo", "mc": { "poo": "hrm" } }')
-    echo "${fromjs.jdump()}"
+    echo "${Json.to(fromjs)}"
+    //
 
     // for (i = 0; i < 10; i++) {
     //     sleep 1
