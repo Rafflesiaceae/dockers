@@ -1,5 +1,7 @@
 {
+	"./build-env"      : "./git-repos/build-env",
 	"./jenkins-shared" : "./git-repos/jenkins-shared",
 	"./main"           : "./git-repos/main",
-	"./build-env"      : "./git-repos/build-env"
+	"./templated"      : "./git-repos/templated",
+	"./variant"        : "./git-repos/variant"
 }

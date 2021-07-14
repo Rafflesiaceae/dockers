@@ -9,7 +9,9 @@ import core.*
 public class MyCustomException extends Exception {MyCustomException(String msg){super(msg)}}
 
 @TupleConstructor
-class TestClass implements Serializable {
+// class TestClass extends Jenklass {
+// class TestClass implements Serializable {
+class TestClass {
     String Foo
     Map<String, Integer> Bar = [qwe: 10]
     MestClass mc = new MestClass(Poo: "ewww")

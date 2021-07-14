@@ -25,6 +25,15 @@ def call(Map _args) {
     def fromjs = core.Json.parse(TestClass, '{ "foo": "moo", "mc": { "poo": "hrm" } }')
     echo "${Json.stringify(fromjs)}"
     echo "end-sharedTest"
+
+    // echo "${fromjs.getClass().getClassLoader().getLoadedClasses()}"
+
+    // echo "${fromjs.getClass()}"
+    // def isSerializable = Json.isSerializableAndEquals(fromjs, jenk.TestClass)
+    // def clazz = fromjs.getClass()
+
+    // return o == no
+    // echo "${isSerializable}"
     //
 
     // for (i = 0; i < 10; i++) {

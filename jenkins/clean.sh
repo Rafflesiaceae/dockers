@@ -5,6 +5,8 @@ repos=(
     "build-env"
     "jenkins-shared"
     "main"
+    "templated"
+    "variant"
 )
 
 for repo in "${repos[@]}"; do

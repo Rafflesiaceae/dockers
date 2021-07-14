@@ -80,6 +80,38 @@ jobs:
               }
           }
       }
+  - script: >
+      multibranchPipelineJob('templated') {
+          branchSources {
+              git {
+                  id('templated-job-dude')
+                  remote('ssh://git@git:22/git-server/repos/templated')
+                  credentialsId('gitkey')
+                  includes('*')
+              }
+          }
+          orphanedItemStrategy {
+              discardOldItems {
+                  numToKeep(20)
+              }
+          }
+      }
+  - script: >
+      multibranchPipelineJob('variant') {
+          branchSources {
+              git {
+                  id('variant-job-dude')
+                  remote('ssh://git@git:22/git-server/repos/variant')
+                  credentialsId('gitkey')
+                  includes('*')
+              }
+          }
+          orphanedItemStrategy {
+              discardOldItems {
+                  numToKeep(20)
+              }
+          }
+      }
   # - script: >
   #     job('bar') {
   #       steps {
