@@ -1,0 +1,115 @@
+@Library('jenkins-shared@main') _
+
+
+import groovy.transform.*
+import org.codehaus.groovy.reflection.ReflectionCache
+import org.codehaus.groovy.reflection.ClassInfo
+
+@TupleConstructor
+class Owner {
+    Command cmd
+    protected String Moo
+    String Poo
+}
+
+// @TupleConstructor
+// abstract class Command extends java.util.LinkedHashMap {
+//     abstract String getId()
+// }
+class Command {
+    String name
+}
+// interface Command {
+//     String getId()
+// }
+
+// @TupleConstructor
+class CommandA extends Command {
+// class CommandA implements Command {
+    String name = "command-a"
+    Boolean isFoo = true
+
+    String getId() { name }
+}
+
+// @TupleConstructor
+class CommandB extends Command {
+// class CommandB implements Command {
+    String name = "command-b"
+    Boolean isB = false
+
+    String getId() { name }
+}
+
+Class resolveCommandVariant(Map c) {
+    switch (c.name) {
+    case "command-a":
+        return CommandA
+        break;
+    case "command-b":
+        return CommandB
+        break;
+    default:
+        throw new Exception("unknown command.name ${c.name}")
+        break;
+    }
+}
+
+pipeline {
+    agent any
+    environment {
+        BUILD_ENV = "${env.WORKSPACE}/build-env"
+    }
+    stages {
+        stage('checkout') {
+            steps {
+                dir("$BUILD_ENV") {
+                    git branch: 'main', credentialsId: 'gitkey', url: 'ssh://git@git:22/git-server/repos/build-env'
+                }
+            }
+        }
+        stage("Foo") {
+            steps {
+                script {
+                    def c = new Owner(
+                        cmd: new CommandB(
+                            isB: true,
+                        )
+                    )
+
+                    // echo Owner.getClassInfo().dump()
+                    // def cc = ReflectionCache.getCachedClass(Owner).classInfo.
+                    def cc = ClassInfo.getClassInfo(Owner)
+                    echo cc.dump()
+
+                    echo "metaclass"
+                    Owner.metaClass.properties.each {echo it.dump() }
+                    echo "reflectioncache"
+                    ReflectionCache.getCachedClass(Owner).getFields().each { echo it.dump() }
+                    // def cc.metaClass.properties.each {echo it.name }
+
+
+                    // String serial = core.Json.stringify(c)
+                    // Map deserial = core.Json.parse(serial, HashMap)
+                    // deserial.cmd = new CommandB(deserial.cmd)
+                    // echo deserial.dump()
+                    // Owner o = new Owner(deserial)
+                    // echo o.dump()
+
+                    // echo("1")
+                    // String serial = core.Json.stringify(c)
+                    // echo("2")
+                    // // Class cmdType = resolveCommandVariant(serial)
+                    // echo("3")
+                    // Owner deserial = core.Json.parse(serial, Owner)
+                    // echo("4")
+                    // println("JSON " + core.Json.stringify(deserial))
+                    // println("DESER" + deserial.dump())
+                    // println("CLASS" + deserial[1].getClass())
+                    // sharedTest(first="test2")
+                }
+            }
+        }
+    }
+}
+

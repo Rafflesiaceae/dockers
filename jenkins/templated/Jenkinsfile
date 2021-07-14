@@ -1,0 +1,100 @@
+// library('') _
+// def core = library('jenkins-shared@main').core
+
+@Library('jenkins-shared@main') _
+
+templateTest(
+    build: { ctx ->
+        echo 'building'
+        sh 'echo qweasd'
+        // sharedTest("ajksdjkdas", people: ["asd"], cats: 100)
+        sharedTest(first="test2")
+        // sharedTest([arg1: "test2"])
+        // echo "${ctx.foo}"
+    }
+)
+
+// import groovy.transform.*
+
+// @TupleConstructor
+// class YeaBoi {
+//     String foo
+
+//     def myeah() {
+//         return "FOO:" + foo
+//         // echo foo
+//     }
+// }
+
+// @TupleConstructor
+// class XeaBoi extends YeaBoi {
+//     String poo
+//     private YeaBoi yb
+
+//     @Override
+//     def myeah() {
+//         return "XFOO:" + foo
+//         // echo foo
+//     }
+// }
+
+// XeaBoi ctx = [
+//     foo: "JKASDJKSAD",
+// ]
+
+// // poo.with {
+//     pipeline {
+//         agent any
+//         environment {
+//             BUILD_ENV = "${env.WORKSPACE}/build-env"
+//         }
+//         // parameters {
+//         //     string name: 'IS_CONDA', defaultValue: '', trim: true
+//         // }
+//         stages {
+//             // stage('') {
+//             //     script {
+//             //         def isConda = params.IS_CONDA.toBoolean()
+//             //     }
+//             // }
+//             stage('refill context') {
+//                 steps {
+//                     script {
+//                         ctx.poo = false
+//                     }
+//                 }
+//             }
+//             stage('checkout') {
+//                 steps {
+//                     dir("$BUILD_ENV") {
+//                         git branch: 'main', credentialsId: 'gitkey', url: 'ssh://git@git:22/git-server/repos/build-env'
+//                     }
+//                     // sh('find . -name "*"')
+//                     // sh("echo isConda: ${isConda()}")
+//                 }
+//             }
+//             stage('build') {
+//                 steps {
+//                     echo 'building'
+//                     sh 'echo qweasd'
+//                     // sharedTest("ajksdjkdas", people: ["asd"], cats: 100)
+//                     sharedTest(first="test2")
+//                     // sharedTest([arg1: "test2"])
+//                     echo "${ctx.foo}"
+//                 }
+//             }
+//             stage('myeahwhatelse') {
+//                 steps {
+//                     script {
+//                         echo ctx.myeah()
+//                     }
+//                 }
+//             }
+//         }
+//         post {
+//             always {
+//                 echo "${core.Json.stringify(ctx)}"
+//             }
+//         }
+//     }
+// // }
