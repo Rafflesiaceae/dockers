@@ -4,7 +4,7 @@ package jenk
 import groovy.transform.*
 import hudson.model.*
 
-import core.Json
+import core.*
 
 public class MyCustomException extends Exception {MyCustomException(String msg){super(msg)}}
 
